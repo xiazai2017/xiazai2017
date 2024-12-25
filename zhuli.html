@@ -4,7 +4,7 @@
     </body>
     <script type="text/javascript">
     let i=parseInt(localStorage.getItem("wishbox_index")),a=document.getElementById("a"),b=function(){
-		a.innerText="\u52A9\u529B\u3010"+i+"\u3011"
+		a.innerText="\u52A9\u529B¡¾"+i+"¡¿"
 		a.setAttribute("href","tbopen://m.taobao.com/tbopen/index.html?h5Url="+encodeURIComponent("https://pages.tmall.com/wow/z/tblife/solution2/game-tblife?wh_biz=tm&disableNav=YES&_ali_full_screen_=true&_3D_Mode_=hdtblife&uniqueTag=hdtblife&route_hash=_wishbox%2Fdraw&prismAction=shareTask&hd_from_id=100078&deliveryId=23460&sceneId=2542&implId=other_"+i+"_1_23460_0"));
 		localStorage.setItem("wishbox_index",++i)
     };
