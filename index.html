@@ -12,8 +12,8 @@
 	<title>旅舍小公举</title>
 	<script>
 	var tmp={
-		"new":{"1064":0,"1065":0,"1066":0,"2066":0,"2067":0,"2068":0,"2069":0,"2070":0},
-		"version":1724863910291||(new Date().getTime()),
+		"new":{"10000":1,"10001":1,"10002":1,"10003":1,"10004":1,"1067":1,"1068":1,"1069":1,"1070":1,"1071":1,"1072":1,"2071":1,"2072":1,"2073":1,"2074":1,"2075":1,"2076":1,"2077":1,"2078":1},
+		"version":1722769358223||(new Date().getTime()),
 		"cur":JSON.parse(localStorage.getItem("llls_data"))
 	};
 	/*
@@ -136,20 +136,20 @@
 			$("mapdonate").innerText="捐赠："+a.donate+" ❤";
 			$("mapcan").innerHTML='状态：<b style="color:'+(a.can?'green':'#a00')+';">'+(a.can?'可梳毛':'梳毛已满')+'</b>';
 			if(icon.bg[a.bg])for(b=0;b<icon.bg[a.bg].length;b++){
-				$("mapbg"+b).setAttribute("src","https://gw.alicdn.com/imgextra/"+icon.bg[a.bg][b]);
+				$("mapbg"+b).setAttribute("src",(icon.bg[a.bg][b].match(/^http/)?icon.bg[a.bg][b]:('https://gw.alicdn.com/imgextra/'+icon.bg[a.bg][b])));
 			}
 			for(b=0;b<a.animal.length;b++){
 				c=a.animal[b];s="";
 				if(c[2]!=0&&c[2]!=3&&c[0]&&c[1]&&icon.icon[c[0]][c[1]]){
-					s='<div><img src="https://gw.alicdn.com/imgextra/'+icon.icon[c[0]][c[1]][c[2]?c[2]:"2"]+'"/></div><div style="bottom: -12px;"><b>'+icon.pet[c[0]]+'</b></div>';
+					s='<div><img src="'+(icon.icon[c[0]][c[1]][c[2]?c[2]:"2"].match(/^http/)?icon.icon[c[0]][c[1]][c[2]?c[2]:"2"]:('https://gw.alicdn.com/imgextra/'+icon.icon[c[0]][c[1]][c[2]?c[2]:"2"]))+'"/></div><div style="bottom: -12px;"><b>'+icon.pet[c[0]]+'</b></div>';
 				}else{
 					if(c[1]){
-						if(icon.toy[c[1]].backSlot)s+='<div><img src="https://gw.alicdn.com/imgextra/'+icon.toy[c[1]].backSlot.icon+'" style="width:'+Math.ceil(icon.toy[c[1]].backSlot.width/4.2)+'%"/></div>';
-						if(icon.toy[c[1]].frontSlot)s+='<div><img src="https://gw.alicdn.com/imgextra/'+icon.toy[c[1]].frontSlot.icon+'" style="width:'+Math.ceil(icon.toy[c[1]].frontSlot.width/4.2)+'%"/></div>';
+						if(icon.toy[c[1]].backSlot)s+='<div><img src="'+(icon.toy[c[1]].backSlot.icon.match(/^http/)?icon.toy[c[1]].backSlot.icon:('https://gw.alicdn.com/imgextra/'+icon.toy[c[1]].backSlot.icon))+'" style="width:'+Math.ceil(icon.toy[c[1]].backSlot.width/4.2)+'%"/></div>';
+						if(icon.toy[c[1]].frontSlot)s+='<div><img src="'+(icon.toy[c[1]].frontSlot.icon.match(/^http/)?icon.toy[c[1]].frontSlot.icon:('https://gw.alicdn.com/imgextra/'+icon.toy[c[1]].frontSlot.icon))+'" style="width:'+Math.ceil(icon.toy[c[1]].frontSlot.width/4.2)+'%"/></div>';
 					}
 					if(c[0]){
-						s+='<div><img style="margin-bottom: -25%;" src="https://gw.alicdn.com/imgextra/'+icon.icon[c[0]]["sit"][c[2]?c[2]:"2"]+'"/></div>';
-						s+='<div style="bottom: -12px;margin-bottom: -25%;"><b>'+icon.pet[c[0]]+'</b></div>';
+						s+='<div><img style="margin-bottom: -25%;" src="'+(icon.icon[c[0]]["sit"][c[2]?c[2]:"2"].match(/^http/)?icon.icon[c[0]]["sit"][c[2]?c[2]:"2"]:('https://gw.alicdn.com/imgextra/'+icon.icon[c[0]]["sit"][c[2]?c[2]:"2"]))+'"/></div>';
+						s+='<div style="bottom: -12px;margin-bottom: -25%;"><b>'+icon.pet[c[0]].name+'</b></div>';
 					}
 				}
 				$("mappos"+b).innerHTML=s;
@@ -165,7 +165,6 @@
 		switch(s.type){
 			case "search":
 				for(a in data.pet){
-					if(!info.pet[a]&&icon.pet[a]){info.pet[a]={name:icon.pet[a],icon:(a>2000?"https://gw.alicdn.com/imgextra/i2/O1CN019iZ7B41n0sFZ99KnS_!!6000000005028-2-tps-202-202.png":"https://gw.alicdn.com/imgextra/i4/O1CN01RMqfAo1ruWohs7ans_!!6000000005691-2-tps-202-202.png")};}
 					if(info.pet[a]&&info.pet[a].name.indexOf(s.value)>=0)c.push(a);
 				}
                 //if(info.pet[a]&&info.pet[a].name.indexOf(s.value)>=0)c.push(a);
@@ -202,7 +201,7 @@
 				c=info.pet[b];
 				if(c.favorites){
 				a='<div style="text-align: center;border-bottom: 2px solid;"><table unselectable="on" style="width: 100%;font-weight: normal;font-size: 4vw;"><thead align="center"><tr><td colspan="3"><h3 style="margin: 0;"><span class="line" style="color:blue;vertical-align: top;">'+c.name+'</span>（'+(data.level[b]?data.level[b]:"???")+'档）</h3></td></tr></thead><tbody><tr>'+
-						'<td rowspan="4" style="width: 30%;" align="center"><img src="https://gw.alicdn.com/imgextra/'+c.icon+'" style="width: 100%;"></td>'+
+						'<td rowspan="4" style="width: 30%;" align="center"><img src="'+(icon.pet[b].icon.match(/^http/)?icon.pet[b].icon:('https://gw.alicdn.com/imgextra/'+icon.pet[b].icon))+'" style="width: 100%;"></td>'+
 						'<td style="width: 15%;">品种：</td><td style="width:55%;font-weight:bold;">'+c.typeName+'（'+c.sex+'）</td></tr><tr>'+
 						'<td>来自：</td><td style="font-weight:bold;">'+c.address+'</td></tr><tr>'+
 						'<td>救于：</td><td style="font-weight:bold;">'+c.findDate+'</td></tr><tr>'+
@@ -212,13 +211,13 @@
 						
 				for(i=0;i<c.favorites.length;i++){
 					t=info.toy[c.favorites[i]];
-					if(t)a+='<img src="https://gw.alicdn.com/imgextra/'+t.icon+'" style="height: 40px;">';
+					if(t)a+='<img src="'+(t.icon.match(/^http/)?t.icon:('https://gw.alicdn.com/imgextra/'+t.icon))+'" style="height: 40px;">';
 				}
 						
 				a+='</td></tr></tfoot></table></div>'+
 				'<div id="res_on"></div><div id="res_off"></div>';
 				}else{
-				a='<div style="text-align: center;border-bottom: 2px solid;"><img src="https://gw.alicdn.com/imgextra/'+c.icon+'" style="width: 20%;"><br/><span class="line" style="color:blue;vertical-align: top;">'+c.name+'</span></div><div id="res_on"></div><div id="res_off"></div>';
+				a='<div style="text-align: center;border-bottom: 2px solid;"><img src="'+(c.icon.match(/^http/)?c.icon:('https://gw.alicdn.com/imgextra/'+c.icon))+'" style="width: 20%;"><br/><span class="line" style="color:blue;vertical-align: top;">'+c.name+'</span></div><div id="res_on"></div><div id="res_off"></div>';
 				}
 				
 				$("res").innerHTML=a;
@@ -244,11 +243,11 @@
 				$("res").innerHTML=a;
 				a=getQuery("sort","");
 				if(a==1){
-					c=c.sort(function(a,b){a=info.pet[a].animalId,b=info.pet[b].animalId;return (a&&b?(a-b):(b?-1:0));});
+					c=c.sort(function(a,b){a=info.pet[a]&&info.pet[a].animalId,b=info.pet[b]&&info.pet[b].animalId;return (a&&b?(a-b):(b?-1:0));});
 				}else if(a==2){
 					c=c.sort(function(a,b){return data.pet[a].length-data.pet[b].length;});
 				}else{
-					c=c.sort(function(a,b){return info.pet[a].name.localeCompare(info.pet[b].name, 'zh');});
+					c=c.sort(function(a,b){return info.pet[a]?info.pet[a].name.localeCompare(info.pet[b].name, 'zh'):-1;});
 				}
 				for(b=0;b<c.length;b++){
 					i=info.pet[c[b]];
@@ -256,7 +255,7 @@
 					t.setAttribute("id","pet");
 					t.setAttribute("data",c[b]);
 					t.setAttribute("class","item");
-					t.innerHTML='<img id="peticon" src="https://gw.alicdn.com/imgextra/'+i.icon+'"><div class="'+(tmp.new[c[b]]?"new":({"1":"one","2":"two","3":"thr","undefined":"one"})[data.level[c[b]]])+'"></div><span id="pettxt" class="line">'+i.name+'('+data.pet[c[b]].length+')</span>';
+					t.innerHTML='<img id="peticon" src="'+(icon.pet[c[b]].icon.match(/^http/)?icon.pet[c[b]].icon:('https://gw.alicdn.com/imgextra/'+icon.pet[c[b]].icon))+'"><div class="'+(tmp.new[c[b]]?"new":({"1":"one","2":"two","3":"thr","undefined":"one"})[data.level[c[b]]])+'"></div><span id="pettxt" class="line">'+i.name+'('+data.pet[c[b]].length+')</span>';
 					$(s.type=="friend"?"res":(tmp.new[c[b]]?"new":(a==1&&i.state?i.state:"res"))).appendChild(t);
 					
 				}
@@ -278,6 +277,10 @@
 	function Init(){
 		var a,b;
 		window.info=extend(window.info,b);
+		for(a in data.pet){
+			if(!icon.pet[a]){icon.pet[a]={name:"未更新",icon:(a>2000?"https://gw.alicdn.com/imgextra/i2/O1CN019iZ7B41n0sFZ99KnS_!!6000000005028-2-tps-202-202.png":"https://gw.alicdn.com/imgextra/i4/O1CN01RMqfAo1ruWohs7ans_!!6000000005691-2-tps-202-202.png")};}
+			if(!info.pet[a]){info.pet[a]=icon.pet[a];}
+		}
 		document.querySelector('.search').addEventListener("click",Bind);
 		document.querySelector('#word').addEventListener("keydown",function(e){if(e.keyCode==13)search()});
 		a=getHash("value");b=getHash("type");
@@ -345,6 +348,7 @@
 			});
 		}else{
 			update(function(){
+			//	"data.txt"	"https://filemanager.ai/new/application/api/download.php?fileKey=ellnkaCIYNTjuStI"
 				load("data.txt",function(i,j,k,t){
 					if(!data||!data.list) return Msg("数据错误！");
 					data.pet={};
