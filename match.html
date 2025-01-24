@@ -1,13 +1,23 @@
-﻿
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn"><head>
     <style>
     body{margin: 2px;}
 	</style>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8; X-Wap-Proxy-Cookie=none">
+<link rel="Shortcut Icon" href="https://gw.alicdn.com/imgextra/i1/O1CN01lRRgxQ1Fv1hEVknnW_!!6000000000548-2-tps-170-170.png"/>
+<link rel="Bookmark" href="https://gw.alicdn.com/imgextra/i1/O1CN01lRRgxQ1Fv1hEVknnW_!!6000000000548-2-tps-170-170.png"/>
 <meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<title>旅舍玩具搭配模拟</title>
 	<script>
+	window.toy_ext={
+		10142:{name: "吉祥如意", cateName: "春节逗猫杆"},
+		10138:{name: "大红灯笼", cateName: "春节小暖炉"},
+		10139:{name: "金银财宝", cateName: "春节元宝"},
+		10140:{name: "大“桔”大利", cateName: "春节花盆"},
+		10141:{name: "好运“摇”来", cateName: "春节小沙发"},
+		10143:{name: "招财纳福", cateName: "春节罐子"},
+		10144:{name: "福临宅地", cateName: "春节小屋"}
+	};
 	function $(obj){return document.getElementById(obj);}
 	function Msg(d){
 		var t=$("msg").value;
@@ -46,18 +56,33 @@
 				if(tmp.toy.indexOf(a[j])>-1)arr.push(a[j]);
 			}
 			if(!arr.length){t.push(tmp.pet[i]);continue}
-			brr=[];c=0;
-			for(j=0;j<arr.length;j++){
-				b=toy[arr[j]]
+			brr=[[],{},{},{},{},{},{},{},{},{},{}];c=0;
+			
+			for(j=0;j<arr.length;j++){		//草丛
+				b=toy[arr[j]];				//b就是玩草丛的毛孩
+				c=[];						//c就是已选中的玩草丛的毛孩
 				for(k=0;k<b.length;k++){
 					if(tmp.pet.indexOf(b[k])>-1){
-						c++;
-						if(brr.indexOf(b[k])<0)brr.push(b[k]);
-					};
+						c.push(b[k]);
+						if(brr[0].indexOf(b[k])<0)brr[0].push(b[k]);
+					}
+				}
+				if(c.length){
+					b=JSON.stringify(c.sort());
+					brr[c.length][b]=(brr[c.length][b]?brr[c.length][b]:0)+1;
 				}
 			}
-			if(arr.length<brr.length||arr.length*brr.length!=c)t.push(tmp.pet[i]);
-			
+			if(brr[0].length<=arr.length){continue}
+			c=1;
+			for(j=1;j<brr.length;j++){
+				for(k in brr[j]){
+					if(brr[j][k]>=j){
+						c=0;break;
+					}
+				}
+				if(!c)break;
+			}
+			if(c)t.push(tmp.pet[i]);
 		}
 		console.log("冲突组合：",t);
 		return t;
@@ -102,7 +127,7 @@
 				}
 				$("res_nochoice").appendChild(b);
 			}
-			$("result").setAttribute("class",favor.setting.onlyone?"onlyone":"");
+			$("result").setAttribute("class",(favor.setting.show1?"show1 ":"")+(favor.setting.show2?"show2 ":"")+(favor.setting.show3?"show3 ":"")+"result");
 			if(!favor.setting.blacklist)favor.setting.blacklist=[];
 			for(i in toy){
 				a=favor.setting.blacklist.indexOf(i)>-1;
@@ -153,10 +178,20 @@
 						}
 						Upmatch(a);
 						break;
-					case "setonlyone":
-						favor.setting.onlyone=a;
+					case "show1":
+						favor.setting.show1=a;
 						localStorage.setItem("AnimalFavor",JSON.stringify(favor));
-						$("result").setAttribute("class",a?"onlyone":"");
+						$("result").classList[a?"add":"remove"]("show1");
+						break;
+					case "show2":
+						favor.setting.show2=a;
+						localStorage.setItem("AnimalFavor",JSON.stringify(favor));
+						$("result").classList[a?"add":"remove"]("show2");
+						break;
+					case "show3":
+						favor.setting.show3=a;
+						localStorage.setItem("AnimalFavor",JSON.stringify(favor));
+						$("result").classList[a?"add":"remove"]("show3");
 						break;
 					case "settoy":
 						c=favor.setting.blacklist.indexOf(b.value);
@@ -191,8 +226,8 @@
 					case "update":
 						e.disabled=1;
 						Msg("加载中！");
-						load("../info.txt",function(){
-							load("../data.txt",function(a,b,c,i,j,k,t){
+						load("https://xiazai2017.github.io/xiazai2017/info.txt",function(){
+							load("https://xiazai2017.github.io/xiazai2017/data.txt",function(a,b,c,i,j,k,t){
 								if(!window.data||!window.info) return Msg("数据错误！");
 								a={};
 								for(i in info.pet){
@@ -200,12 +235,12 @@
 									for(j=0;j<info.pet[i].favoriteItemIds.length;j++){
 										c=info.pet[i].favoriteItemIds[j];
 										if(!info.toy[c]) continue;
-										c=info.toy[c].cateName;
+										c=window.toy_ext[c]?window.toy_ext[c].cateName:info.toy[c].cateName;
 										if(b.indexOf(c)<0)b.push(c);
 									}
 									a[i]={name:info.pet[i].name,icon:info.pet[i].icon,level:data.level[i],toy:b};
 								}
-								a["setting"]=favor&&favor.setting?favor.setting:{blacklist:[]};
+								a["setting"]=favor&&favor.setting?favor.setting:{show1:1,show2:1,show3:1,blacklist:[]};
 								localStorage.setItem("AnimalFavor",JSON.stringify(a));
 								location.reload();
 							},function(){
@@ -216,7 +251,7 @@
 						});
 						break;
 					case "setting":
-						$("tip").innerHTML='<label data="{&quot;type&quot;:&quot;setonlyone&quot;,&quot;value&quot;:&quot;onlyone&quot;}"><input type="checkbox" '+(favor.setting.onlyone?'checked="a"':'')+'><span>仅显示一档</span></label><p>--------玩具黑名单名单（勾选则不显示）--------</p>';
+						$("tip").innerHTML='<label class="item" data="{&quot;type&quot;:&quot;show1&quot;,&quot;value&quot;:&quot;show1&quot;}"><input type="checkbox" '+(favor.setting.show1?'checked="a"':'')+'><span>一档</span></label><label class="item" data="{&quot;type&quot;:&quot;show2&quot;,&quot;value&quot;:&quot;show2&quot;}"><input type="checkbox" '+(favor.setting.show2?'checked="a"':'')+'><span>二档</span></label><label class="item" data="{&quot;type&quot;:&quot;show3&quot;,&quot;value&quot;:&quot;show3&quot;}"><input type="checkbox" '+(favor.setting.show3?'checked="a"':'')+'><span>三档</span></label><p>--------玩具黑名单名单（勾选则不显示）--------</p>';
 						for(i in toy){
 							a=favor.setting.blacklist.indexOf(i)<0;
 							b=document.createElement('label');
@@ -230,7 +265,7 @@
 						t.innerHTML='<img id="pic" style="width: 100%;" src="'+a+'" crossOrigin="anonymous">';
 						$("tip").appendChild(t);
 						*/
-						$("closetip").style.display="block";
+						$("closetip").style.display="table";
 						break;
 					case "Load":
 						break;
@@ -269,15 +304,24 @@
 			#pet span{position: absolute;bottom: 0;left: 0;background: rgba(255, 255, 255, 0.7);;}
 			.item input[type="checkbox"]:checked{display:inline-block;}
 			.undefined,.onlyone .two,.onlyone .thr{display:none;}
+			.result div div{display:none;}
+			.show1 div .one,.show2 div .two,.show3 div .thr{display:block;}
 			.one #pet{color:black;}.two #pet{color:#0af;}.thr #pet{color:red;}
 		</style>
 	</head>
 	<body style="">
 	<div style="padding: 3px;background: #D8D8D8;border: 2px solid #ddd;border-radius: 4px;height: calc(100% - 10px);" class="search">
+		<!--div id="closetip" style="text-align: center;width: 100%;height: 100%;margin: 0;position: fixed;background: #aa9;top: 0;left: 0;display: none;z-index: 10;">
+			<div id="tip" style="width:calc(100% - 20px);position: relative;top:50px;left: 0;background: white;padding: 10px;"></div>
+		</div-->
 		<div id="closetip" style="text-align: center;width: 100%;height: 100%;margin: 0;position: fixed;background: #aa9;top: 0;left: 0;display: none;z-index: 10;">
-			<div id="tip" style="width:calc(100% - 20px);position: relative;top:calc(50% - 190px);left: 0;background: white;padding: 10px;"></div>
+			<div style="display:table-row;"></div>
+			<div style="display:table-row;height:90px;">
+				<div id="tip" style="width:calc(100% - 20px);position: relative;display: table-cell;left: 0;background: white;padding: 10px;"></div>
+			</div>
+			<div style="display:table-row;"></div>
 		</div>
-	
+
 		<div style="">
 			<input id="update" type="button" style="width: 18%;text-align: center;color: blue;height: 25px;" value="更新" ><input id="msg" type="text" style="width: 64%;text-align: center;color: blue;background: #b3b3b3;border: none;padding: 2px 0;height: 25px;" value="消息区域" disabled=""><input id="setting" type="button" style="width: 18%;text-align: center;color: blue;height: 25px;" value="选项" >
 		</div>

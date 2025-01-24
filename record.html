@@ -70,7 +70,18 @@
 						localStorage.setItem("AnimalLogData",JSON.stringify(data))
 					}
 					break;
-				case "Load":
+				case "update":
+					GetJS("https://xiazai2017.github.io/xiazai2017/info.txt?t="+Math.floor((new Date().getTime())/1000),function(){
+						if(window.info&&window.info.pet){
+							window.data.info.pet=window.info.pet;
+							localStorage.setItem("AnimalLogData",JSON.stringify(data));
+							location.reload();
+						}else{
+							Msg("旅舍数据获取失败！");
+						}
+					},function(){
+						Msg("旅舍数据获取失败！");
+					})
 					break;
 				case "submit":
 					break;
@@ -120,7 +131,7 @@
 						location.search = "?title=default";
 						localStorage.setItem("AnimalLogData",JSON.stringify(data))
 					} else {
-						location.search = "?title=" + encodeURI(e)
+						location.search = "?title=" + encodeURIComponent(e)
 					}
 				});
 		c=$("#other");
@@ -162,15 +173,25 @@
 		if(!window.data)window.data={};
 		if(!window.data[window.title])window.data[window.title]={"target":[],"done":[]};
 		if(!window.title)location.search = "?title=default";
-		GetJS("http://llls.000.pe/info.txt?t="+Math.floor((new Date().getTime())/1000),function(){
-			if(window.info&&window.info.pet){
-				Init();
-			}else{
+		if(window.data.info&&window.data.info.pet){
+			window.info=window.data.info;
+			Init();
+		}else{
+			window.data.info={"target":[],"done":[]};
+			GetJS("https://xiazai2017.github.io/xiazai2017/info.txt?t="+Math.floor((new Date().getTime())/1000),function(){
+				if(window.info&&window.info.pet){
+					window.data.info.pet=window.info.pet;
+					localStorage.setItem("AnimalLogData",JSON.stringify(data));
+					Init();
+				}else{
+					Msg("旅舍数据获取失败！");
+				}
+			},function(){
 				Msg("旅舍数据获取失败！");
-			}
-		},function(){
-			Msg("旅舍数据获取失败！");
-		})
+			})
+		}
+		
+		
 	}
 	document.addEventListener("DOMContentLoaded",Loading);
 	</script>
@@ -199,5 +220,6 @@
 		--><div style="text-align: center;background: #eee;">可选</div><!--
 		--><div id="other" style="min-height: 20vw;"></div><!--
 	--></div>
+	<input id="update" type="button" style="width: 100%;text-align: center;color: blue;" value="更新毛孩数据">
 	</div>
 </body></html>
