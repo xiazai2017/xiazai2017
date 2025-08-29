@@ -13,7 +13,7 @@
 	<script>
 	var tmp={
 		"new":{"10004":1,"2073":1},
-		"version":1740562828889||(new Date().getTime()),
+		"version":1756441801885||(new Date().getTime()),
 		"cur":JSON.parse(localStorage.getItem("llls_data"))
 	};
 	/*
@@ -32,22 +32,24 @@
 	function $(obj){return document.getElementById(obj);}
 	function update(f){
 		delete window.icon;delete window.info;
-		load("info.txt",function(){
-			load("icon.txt",function(d){
+		load("https://xiazai2017.github.io/xiazai2017/info.txt",function(){
+			load("https://xiazai2017.github.io/xiazai2017/icon.txt",function(d){
 				if(!window.icon||!window.info) return Msg("数据错误！");
 				localStorage.setItem("llls_data",JSON.stringify({icon:window.icon,info:window.info,version:(new Date().getTime())}));
 				if(typeof f=="function") f();
 			},function(){
-				Msg("图片数据错误！");
+				Msg("加载图片数据！");
+				setTimeout(function(){update(f)},120)
 			});
 		},function(){
-			Msg("毛孩数据错误！");
+			Msg("加载毛孩数据！");
+			setTimeout(function(){update(f)},120)
 		});
 	}
 	function Msg(d){
 		var t=$("msg").value;
 		if(t.indexOf(d)==0) d=t+"！";
-		$("msg").value=d;
+		$("msg").value=d.replace(/！！！！！！！！！！/,"！");
 	}
 	function Bind(e){
 		var a,b,c,t;
@@ -102,7 +104,7 @@
 						Cut(a);
 					}else{
 						Msg("加载图片资源！");
-						load("icon.txt",function(){
+						load("https://xiazai2017.github.io/xiazai2017/icon.txt",function(){
 							Cut(a);
 						},function(){
 							Msg("图片资源加载错误！");
@@ -141,7 +143,7 @@
 			for(b=0;b<a.animal.length;b++){
 				c=a.animal[b];s="";
 				if(c[2]!=0&&c[2]!=3&&c[0]&&c[1]&&icon.icon[c[0]][c[1]]){
-					s='<div><img src="'+(icon.icon[c[0]][c[1]][c[2]?c[2]:"2"].match(/^http/)?icon.icon[c[0]][c[1]][c[2]?c[2]:"2"]:('https://gw.alicdn.com/imgextra/'+icon.icon[c[0]][c[1]][c[2]?c[2]:"2"]))+'"/></div><div style="bottom: -12px;"><b>'+icon.pet[c[0]]+'</b></div>';
+					s='<div><img src="'+(icon.icon[c[0]][c[1]][c[2]?c[2]:"2"].match(/^http/)?icon.icon[c[0]][c[1]][c[2]?c[2]:"2"]:('https://gw.alicdn.com/imgextra/'+icon.icon[c[0]][c[1]][c[2]?c[2]:"2"]))+'"/></div><div style="bottom: -12px;"><b>'+icon.pet[c[0]].name+'</b></div>';
 				}else{
 					if(c[1]){
 						if(icon.toy[c[1]].backSlot)s+='<div><img src="'+(icon.toy[c[1]].backSlot.icon.match(/^http/)?icon.toy[c[1]].backSlot.icon:('https://gw.alicdn.com/imgextra/'+icon.toy[c[1]].backSlot.icon))+'" style="width:'+Math.ceil(icon.toy[c[1]].backSlot.width/4.2)+'%"/></div>';
@@ -331,7 +333,7 @@
 		if(tmp.cur&&tmp.cur.version&&tmp.cur.version>tmp.version){
 			window.icon=tmp.cur.icon;
 			window.info=tmp.cur.info;
-			load("data.txt",function(i,j,k,t){
+			load("https://xiazai2017.github.io/xiazai2017/data.txt",function(i,j,k,t){
 				if(!data||!data.list) return Msg("数据错误！");
 				data.pet={};
 				for(i=0;i<data.list.length;i++){
@@ -344,12 +346,13 @@
 				}
 				Init();
 			},function(){
-				Msg("用户数据错误！");
+				Msg("加载中！");
+				setTimeout(Loading,120)
 			});
 		}else{
 			update(function(){
 			//	"data.txt"	"https://filemanager.ai/new/application/api/download.php?fileKey=ellnkaCIYNTjuStI"
-				load("data.txt",function(i,j,k,t){
+				load("https://xiazai2017.github.io/xiazai2017/data.txt",function(i,j,k,t){
 					if(!data||!data.list) return Msg("数据错误！");
 					data.pet={};
 					for(i=0;i<data.list.length;i++){
@@ -434,16 +437,16 @@
 				border-radius: 50%;
 			}
 			.new{
-				background: url(new.png) 0 0/32px  no-repeat;
+				background: url(https://xiazai2017.github.io/xiazai2017/new.png) 0 0/32px  no-repeat;
 			}
 			.one{
-				background: url(mmexport1680932140860.png) 0 0/32px  no-repeat;
+				background: url(https://xiazai2017.github.io/xiazai2017/mmexport1680932140860.png) 0 0/32px  no-repeat;
 			}
 			.two{
-				background: url(mmexport1680932162740.png) 0 0/32px  no-repeat;
+				background: url(https://xiazai2017.github.io/xiazai2017/mmexport1680932162740.png) 0 0/32px  no-repeat;
 			}
 			.thr{
-				background: url(mmexport1680932165082.png) 0 0/32px  no-repeat;
+				background: url(https://xiazai2017.github.io/xiazai2017/mmexport1680932165082.png) 0 0/32px  no-repeat;
 			}
 			
 			#mapbg img{width: calc(50vw + 2px);height: calc(54vw + 2px);margin: -1px;}
